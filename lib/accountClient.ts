@@ -1,5 +1,4 @@
 import { Account } from "./domain/account";
-import { Calendar } from "./domain/calendar";
 import { NettuBaseClient } from "./baseClient";
 
 export type CreatedAccountResponse = {

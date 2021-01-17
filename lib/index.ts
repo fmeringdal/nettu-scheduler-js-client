@@ -11,6 +11,8 @@ import { NettuHealthClient } from "./healthClient";
 import { NettuServiceClient } from "./serviceClient";
 import { NettuUserClient } from "./userClient";
 
+export * as domain from "./domain";
+
 type PartialCredentials = {
   apiKey?: string;
   nettuAccount?: string;
