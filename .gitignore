@@ -1,0 +1,14 @@
+node_modules
+coverage
+.coveralls.yml
+es
+build
+yarn-error.log
+.rpt2_cache
+dist
+docs
+.firebase
+.DS_Store
+.idea
+codeSnippets/
+package-lock.json
