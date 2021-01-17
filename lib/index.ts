@@ -39,7 +39,7 @@ export const config: ClientConfig = {
 export const NettuClient = (
   partialCreds?: PartialCredentials
 ): INettuClient => {
-  let creds = createCreds(partialCreds);
+  const creds = createCreds(partialCreds);
 
   return {
     account: new NettuAccountClient(creds),

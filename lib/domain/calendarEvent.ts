@@ -5,7 +5,7 @@ export enum Frequenzy {
   Yearly = "yearly",
 }
 
-export type RRuleOptions = {
+export interface RRuleOptions {
   freq: Frequenzy;
   interval: number;
   count?: number;
@@ -15,9 +15,9 @@ export type RRuleOptions = {
   bysetpos?: number[];
   byweekday?: number[];
   bynweekday?: number[][];
-};
+}
 
-export type CalendarEvent = {
+export interface CalendarEvent {
   id: string;
   startTs: number;
   duration: number;
@@ -27,10 +27,10 @@ export type CalendarEvent = {
   exdates: number[];
   calendarId: string;
   userId: string;
-};
+}
 
-export type CalendarEventInstance = {
+export interface CalendarEventInstance {
   startTs: number;
   endTs: number;
   busy: boolean;
-};
+}
