@@ -1,4 +1,4 @@
-import { CalendarEvent, CalendarEventInstance } from "./domain/calendarEvent";
+import { CalendarEventInstance } from "./domain/calendarEvent";
 import { NettuBaseClient } from "./baseClient";
 
 export type GetUserFeebusyReq = {
