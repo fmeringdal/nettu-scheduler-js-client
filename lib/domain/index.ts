@@ -6,4 +6,12 @@ export {
   Frequenzy,
   RRuleOptions,
 } from "./calendarEvent";
+export {
+  Schedule,
+  ScheduleRule,
+  ScheduleRuleInterval,
+  Time,
+  ScheduleRuleVariant,
+  Weekday,
+} from "./schedule";
 export { Service, UserServiceResource } from "./service";

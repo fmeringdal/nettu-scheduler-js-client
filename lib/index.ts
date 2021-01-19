@@ -8,6 +8,7 @@ import {
 import { NettuCalendarClient } from "./calendarClient";
 import { NettuEventClient } from "./eventClient";
 import { NettuHealthClient } from "./healthClient";
+import { NettuScheduleClient } from "./scheduleClient";
 import { NettuServiceClient } from "./serviceClient";
 import { NettuUserClient } from "./userClient";
 
@@ -25,6 +26,7 @@ export interface INettuClient {
   events: NettuEventClient;
   user: NettuUserClient;
   service: NettuServiceClient;
+  schedule: NettuScheduleClient;
   health: NettuHealthClient;
 }
 
@@ -47,6 +49,7 @@ export const NettuClient = (
     calendar: new NettuCalendarClient(creds),
     user: new NettuUserClient(creds),
     service: new NettuServiceClient(creds),
+    schedule: new NettuScheduleClient(creds),
     health: new NettuHealthClient(creds),
   };
 };

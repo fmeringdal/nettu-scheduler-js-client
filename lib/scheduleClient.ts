@@ -6,9 +6,13 @@ export interface UpdateScheduleRequest {
   timezone?: string;
 }
 
+export interface CreateScheduleRequest {
+  timezone: string;
+}
+
 export class NettuScheduleClient extends NettuBaseClient {
-  public async insert() {
-    return await this.post<Schedule>(`/schedule`, undefined);
+  public async insert(req: CreateScheduleRequest) {
+    return await this.post<Schedule>(`/schedule`, req);
   }
 
   public async update(scheduleId: string, update: UpdateScheduleRequest) {

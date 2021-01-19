@@ -4,13 +4,26 @@ export interface Schedule {
   rules: ScheduleRule[];
 }
 
-enum ScheduleRuleVariant {
+export enum ScheduleRuleVariant {
   WDay = "WDay",
   Date = "Date",
 }
 
+export enum Weekday {
+  Mon = "Mon",
+  Tue = "Tue",
+  Wed = "Wed",
+  Thu = "Thu",
+  Fri = "Fri",
+  Sat = "Sat",
+  Sun = "Sun",
+}
+
 export interface ScheduleRule {
-  type: ScheduleRuleVariant;
+  variant: {
+    type: ScheduleRuleVariant;
+    value: string;
+  };
   intervals: ScheduleRuleInterval[];
 }
 
