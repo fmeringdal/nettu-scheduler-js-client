@@ -33,6 +33,6 @@ export interface Time {
 }
 
 export interface ScheduleRuleInterval {
-  from: Time;
-  to: Time;
+  start: Time;
+  end: Time;
 }
