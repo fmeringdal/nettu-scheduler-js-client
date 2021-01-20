@@ -10,8 +10,6 @@ export interface RRuleOptions {
   interval: number;
   count?: number;
   until?: number;
-  tzid: string;
-  wkst: 0;
   bysetpos?: number[];
   byweekday?: number[];
   bynweekday?: number[][];

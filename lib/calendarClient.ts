@@ -1,8 +1,9 @@
 import { Calendar } from "./domain/calendar";
 import { NettuBaseClient } from "./baseClient";
 
-type CalendarSettings = {
-  wkst: number;
+type UpdateCalendarSettingsRequest = {
+  wkst?: number;
+  timezone?: string;
 };
 
 export class NettuCalendarClient extends NettuBaseClient {
@@ -19,7 +20,10 @@ export class NettuCalendarClient extends NettuBaseClient {
     return this.delete<any>(`/calendar/${calendarId}`);
   }
 
-  public updateSettings(calendarId: string, settings: CalendarSettings) {
+  public updateSettings(
+    calendarId: string,
+    settings: UpdateCalendarSettingsRequest
+  ) {
     return this.put<void>(`/calendar/${calendarId}`, settings);
   }
 }
