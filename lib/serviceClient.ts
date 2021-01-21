@@ -7,12 +7,14 @@ type CreatedServiceResponse = {
 
 type AddUserToServiceRequest = {
   userId: string;
-  calendarIds: string[];
+  calendarIds?: string[];
+  scheduleIds?: string[];
 };
 
 type UpdateUserToServiceRequest = {
   userId: string;
-  calendarIds: string[];
+  calendarIds?: string[];
+  scheduleIds?: string[];
 };
 
 export type GetServiceBookingslotsReq = {
@@ -55,6 +57,7 @@ export class NettuServiceClient extends NettuBaseClient {
   ) {
     return this.put<void>(`/service/${serviceId}/users/${data.userId}`, {
       calendarIds: data.calendarIds,
+      scheduleIds: data.scheduleIds,
     });
   }
 

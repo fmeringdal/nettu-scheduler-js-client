@@ -47,7 +47,7 @@ export abstract class NettuBaseClient {
 }
 
 export class APIResponse<T> {
-  readonly data: T;
+  readonly data?: T; // Could be a failed response and therefore nullable
   readonly status: number;
   readonly res: AxiosResponse;
 
