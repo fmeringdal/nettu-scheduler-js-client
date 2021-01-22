@@ -8,6 +8,7 @@ export interface UpdateScheduleRequest {
 
 export interface CreateScheduleRequest {
   timezone: string;
+  rules?: ScheduleRule[];
 }
 
 export class NettuScheduleClient extends NettuBaseClient {
