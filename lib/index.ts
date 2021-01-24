@@ -12,7 +12,7 @@ import { NettuScheduleClient } from "./scheduleClient";
 import { NettuServiceClient } from "./serviceClient";
 import { NettuUserClient } from "./userClient";
 
-export * as domain from "./domain";
+export * from "./domain";
 
 type PartialCredentials = {
   apiKey?: string;
