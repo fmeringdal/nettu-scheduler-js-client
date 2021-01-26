@@ -1,6 +1,6 @@
 {
   "name": "@nettu/sdk-scheduler",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "The Nettu Scheduler Javascript library provides convenient access to the Nettu Scheudler API from server-side JavaScript applications or web applications",
   "main": "dist/index.js",
   "scripts": {

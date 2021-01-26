@@ -28,3 +28,9 @@ export class NettuScheduleClient extends NettuBaseClient {
     return await this.get<Schedule>(`/schedule/${scheduleId}`);
   }
 }
+
+export class NettuScheduleAdminClient extends NettuBaseClient {
+  public async insert(userId: string, req: CreateScheduleRequest) {
+    return await this.post<Schedule>(`/user/${userId}/schedule`, req);
+  }
+}

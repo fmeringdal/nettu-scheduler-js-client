@@ -8,7 +8,7 @@ import {
 import { NettuCalendarClient } from "./calendarClient";
 import { NettuEventClient } from "./eventClient";
 import { NettuHealthClient } from "./healthClient";
-import { NettuScheduleClient } from "./scheduleClient";
+import { NettuScheduleAdminClient, NettuScheduleClient } from "./scheduleClient";
 import { NettuServiceClient } from "./serviceClient";
 import { NettuUserClient } from "./userClient";
 
@@ -28,6 +28,10 @@ export interface INettuClient {
   service: NettuServiceClient;
   schedule: NettuScheduleClient;
   health: NettuHealthClient;
+}
+
+export interface INettuAdminClient {
+  schedule: NettuScheduleAdminClient;
 }
 
 type ClientConfig = {
@@ -51,6 +55,16 @@ export const NettuClient = (
     service: new NettuServiceClient(creds),
     schedule: new NettuScheduleClient(creds),
     health: new NettuHealthClient(creds),
+  };
+};
+
+export const NettuAdminClient = (
+  partialCreds?: PartialCredentials
+): INettuAdminClient => {
+  const creds = createCreds(partialCreds);
+
+  return {
+    schedule: new NettuScheduleAdminClient(creds),
   };
 };
 
