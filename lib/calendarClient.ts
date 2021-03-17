@@ -1,29 +1,86 @@
 import { Calendar } from "./domain/calendar";
 import { NettuBaseClient } from "./baseClient";
+import { Metadata } from "./domain/metadata";
+import { CalendarEvent, CalendarEventInstance } from "./domain";
+import { Timespan } from "./eventClient";
 
-type UpdateCalendarSettingsRequest = {
-  wkst?: number;
+type CreateCalendarRequest = {
+  weekStart?: number;
   timezone?: string;
+  metadata?: Metadata,
 };
 
+type UpdateCalendarRequest = CreateCalendarRequest;
+
+type GetCalendarEventsResponse = {
+  calendar: Calendar,
+  events: {
+    event: CalendarEvent;
+    instances: CalendarEventInstance[];
+  }[]
+}
+
+type CalendarResponse = {
+  calendar: Calendar;
+}
+
 export class NettuCalendarClient extends NettuBaseClient {
-  // data will probably be something in the future
-  public insert(data: undefined) {
-    return this.post<any>("/calendar", data);
+  public create(userId: string, data: CreateCalendarRequest) {
+    return this.post<CalendarResponse>(`/user/${userId}/calendar`, data);
   }
 
   public findById(calendarId: string) {
-    return this.get<Calendar>(`/calendar/${calendarId}`);
+    return this.get<CalendarResponse>(`/user/calendar/${calendarId}`);
+  }
+
+  public findByMeta(
+    meta: {
+      key: string,
+      value: string
+    },
+    skip: number,
+    limit: number
+  ) {
+    return this.get<{ calendars: Calendar[] }>(`/calendar/meta?skip=${skip}&limit=${limit}&key=${meta.key}&value=${meta.value}`);
   }
 
   public remove(calendarId: string) {
-    return this.delete<any>(`/calendar/${calendarId}`);
+    return this.delete<CalendarResponse>(`/user/calendar/${calendarId}`);
   }
 
-  public updateSettings(
+  public update(
     calendarId: string,
-    settings: UpdateCalendarSettingsRequest
+    data: UpdateCalendarRequest
   ) {
-    return this.put<void>(`/calendar/${calendarId}`, settings);
+    return this.put<CalendarResponse>(`/user/calendar/${calendarId}`, data);
+  }
+
+  public getEvents(calendarId: string, startTS: number, endTS: number) {
+    return this.get<GetCalendarEventsResponse>(`/user/calendar/${calendarId}/events?startTs=${startTS}&endTs=${endTS}`);
+  }
+}
+
+export class NettuCalendarUserClient extends NettuBaseClient {
+  public create(data: CreateCalendarRequest) {
+    return this.post<CalendarResponse>("/calendar", data);
+  }
+
+  public findById(calendarId: string) {
+    return this.get<CalendarResponse>(`/calendar/${calendarId}`);
+  }
+
+  public remove(calendarId: string) {
+    return this.delete<CalendarResponse>(`/calendar/${calendarId}`);
+  }
+
+  public update(
+    calendarId: string,
+    data: UpdateCalendarRequest
+  ) {
+    return this.put<CalendarResponse>(`/calendar/${calendarId}`, data);
+  }
+
+  public getEvents(calendarId: string, timespan: Timespan) {
+    return this.get<GetCalendarEventsResponse>(`/user/calendar/${calendarId}/events?startTs=${timespan.startTs}&endTs=${timespan.endTs}`);
   }
 }

@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { config } from ".";
 
-// TODO: add generics and return APIResponse in the other http methods (remaining: PUT, POST, DELETE, done: GET)
 export abstract class NettuBaseClient {
   private readonly credentials: ICredentials;
 

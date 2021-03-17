@@ -5,12 +5,12 @@ import {
   ICredentials,
   UserCreds,
 } from "./baseClient";
-import { NettuCalendarClient } from "./calendarClient";
-import { NettuEventClient } from "./eventClient";
+import { NettuCalendarClient, NettuCalendarUserClient } from "./calendarClient";
+import { NettuEventClient, NettuEventUserClient } from "./eventClient";
 import { NettuHealthClient } from "./healthClient";
-import { NettuScheduleAdminClient, NettuScheduleClient } from "./scheduleClient";
-import { NettuServiceClient } from "./serviceClient";
-import { NettuUserClient } from "./userClient";
+import { NettuScheduleUserClient, NettuScheduleClient } from "./scheduleClient";
+import { NettuServiceUserClient, NettuServiceClient } from "./serviceClient";
+import { NettuUserClient as _NettuUserClient, NettuUserUserClient } from "./userClient";
 
 export * from "./domain";
 
@@ -20,18 +20,22 @@ type PartialCredentials = {
   token?: string;
 };
 
+export interface INettuUserClient {
+  calendar: NettuCalendarUserClient;
+  events: NettuEventUserClient;
+  service: NettuServiceUserClient;
+  schedule: NettuScheduleUserClient;
+  user: NettuUserUserClient;
+}
+
 export interface INettuClient {
   account: NettuAccountClient;
   calendar: NettuCalendarClient;
   events: NettuEventClient;
-  user: NettuUserClient;
+  health: NettuHealthClient;
   service: NettuServiceClient;
   schedule: NettuScheduleClient;
-  health: NettuHealthClient;
-}
-
-export interface INettuAdminClient {
-  schedule: NettuScheduleAdminClient;
+  user: _NettuUserClient;
 }
 
 type ClientConfig = {
@@ -40,6 +44,20 @@ type ClientConfig = {
 
 export const config: ClientConfig = {
   baseUrl: "http://localhost:5000",
+};
+
+export const NettuUserClient = (
+  partialCreds?: PartialCredentials
+): INettuUserClient => {
+  const creds = createCreds(partialCreds);
+
+  return {
+    calendar: new NettuCalendarUserClient(creds),
+    events: new NettuEventUserClient(creds),
+    service: new NettuServiceUserClient(creds),
+    schedule: new NettuScheduleUserClient(creds),
+    user: new NettuUserUserClient(creds)
+  };
 };
 
 export const NettuClient = (
@@ -51,20 +69,10 @@ export const NettuClient = (
     account: new NettuAccountClient(creds),
     events: new NettuEventClient(creds),
     calendar: new NettuCalendarClient(creds),
-    user: new NettuUserClient(creds),
+    user: new _NettuUserClient(creds),
     service: new NettuServiceClient(creds),
     schedule: new NettuScheduleClient(creds),
     health: new NettuHealthClient(creds),
-  };
-};
-
-export const NettuAdminClient = (
-  partialCreds?: PartialCredentials
-): INettuAdminClient => {
-  const creds = createCreds(partialCreds);
-
-  return {
-    schedule: new NettuScheduleAdminClient(creds),
   };
 };
 
@@ -75,7 +83,7 @@ const createCreds = (creds?: PartialCredentials): ICredentials => {
   } else if (creds.nettuAccount) {
     return new UserCreds(creds.nettuAccount, creds.token);
   } else {
-    return new EmptyCreds();
     // throw new Error("No api key or nettu account provided to nettu client.");
+    return new EmptyCreds();
   }
 };

@@ -1,3 +1,5 @@
+import { Metadata } from "./metadata"
+
 export enum Frequenzy {
   Daily = "daily",
   Weekly = "weekly",
@@ -12,7 +14,10 @@ export interface RRuleOptions {
   until?: number;
   bysetpos?: number[];
   byweekday?: number[];
-  bynweekday?: number[][];
+  bymonthday?: number[];
+  bymonth?: number[];
+  byyearday?: number[];
+  byweekno?: number[];
 }
 
 export interface CalendarEvent {
@@ -20,11 +25,16 @@ export interface CalendarEvent {
   startTs: number;
   duration: number;
   busy: boolean;
-  endTs?: number;
-  recurrence?: RRuleOptions;
+  updated: number;
+  created: number;
   exdates: number[];
   calendarId: string;
   userId: string;
+  metadata: Metadata;
+  recurrence?: RRuleOptions;
+  reminder?: {
+    minutesBefore: number;
+  }
 }
 
 export interface CalendarEventInstance {

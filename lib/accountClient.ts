@@ -1,24 +1,23 @@
 import { Account } from "./domain/account";
 import { NettuBaseClient } from "./baseClient";
 
-export type CreatedAccountResponse = {
-  accountId: string;
-  secretApiKey: string;
+type AccountResponse = {
+  account: Account;
 };
 
-export type CreatedAccountRequest = {
+type CreatedAccountRequest = {
   code: string;
 };
 
 export class NettuAccountClient extends NettuBaseClient {
   // data will be something in the future
-  public insert(data: CreatedAccountRequest) {
-    return this.post<CreatedAccountResponse>("/account", data);
+  public create(data: CreatedAccountRequest) {
+    return this.post<AccountResponse>("/account", data);
   }
 
-  public setPublicSigningKey(publicSigningKeyBase64?: string) {
-    return this.put<void>("/account/pubkey", {
-      publicKeyB64: publicSigningKeyBase64,
+  public setPublicSigningKey(publicSigningKey?: string) {
+    return this.put<AccountResponse>("/account/pubkey", {
+      publicJwtKey: publicSigningKey,
     });
   }
 
@@ -26,7 +25,17 @@ export class NettuAccountClient extends NettuBaseClient {
     return this.setPublicSigningKey();
   }
 
-  public find() {
-    return this.get<Account>(`/account`);
+  public setWebhook(url: string) {
+    return this.put<AccountResponse>(`/account/webhook`, {
+      webhookUrl: url
+    });
+  }
+
+  public removeWebhook() {
+    return this.delete<AccountResponse>(`/account/webhook`);
+  }
+
+  public me() {
+    return this.get<AccountResponse>(`/account`);
   }
 }

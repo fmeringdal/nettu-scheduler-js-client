@@ -1,52 +1,59 @@
 import { CalendarEventInstance } from "./domain/calendarEvent";
 import { NettuBaseClient } from "./baseClient";
+import { Metadata } from "./domain/metadata";
+import { User } from "./domain/user";
 
-export type GetUserFeebusyReq = {
+type GetUserFeebusyReq = {
   startTs: number;
   endTs: number;
   calendarIds?: string[];
 };
 
-export type GetUserBookingslotsReq = {
-  ianaTz: string;
-  duration: number;
-  interval: number;
-  date: string;
-  calendarIds?: string[];
-};
-
-export type GetUserFeebusyResponse = {
+type GetUserFeebusyResponse = {
   free: CalendarEventInstance[];
 };
 
-export type BookingSlot = {
-  start: number;
-  duration: number;
-  available_until: number;
-};
+type UpdateUserRequest = {
+  metadata?: Metadata;
+}
 
-export type GetUserBookingslotsResponse = {
-  bookingSlots: BookingSlot[];
-};
+type CreateUserRequest = {
+  metadata?: Metadata;
+}
 
-export type User = {
-  id: string;
-  accountId: string;
-};
+type UserResponse = {
+  user: User;
+}
 
 export class NettuUserClient extends NettuBaseClient {
-  public create(userId: string) {
-    return this.post<User>(`/user`, {
-      userId,
-    });
+  public create(data?: CreateUserRequest) {
+    return this.post<UserResponse>(`/user`, data);
   }
 
   public find(userId: string) {
-    return this.get<User>(`/user/${userId}`);
+    return this.get<UserResponse>(`/user/${userId}`);
+  }
+
+  public update(
+    userId: string,
+    data: UpdateUserRequest
+  ) {
+    return this.put<UserResponse>(`/user/${userId}`, data);
+  }
+
+  public findByMeta(
+    meta: {
+      key: string,
+      value: string
+    },
+    skip: number,
+    limit: number
+  ) {
+    return this.get<User[]>(`/user/meta?skip=${skip}&limit=${limit}&key=${meta.key}&value=${meta.value}`);
   }
 
   public remove(userId: string) {
-    return this.delete<void>(`/user/${userId}`);
+    return this.delete<UserResponse>(`/user/${userId}`);
   }
 
   public freebusy(userId: string, req: GetUserFeebusyReq) {
@@ -58,14 +65,11 @@ export class NettuUserClient extends NettuBaseClient {
       `/user/${userId}/freebusy?${queryString}`
     );
   }
+}
 
-  public bookingslots(userId: string, req: GetUserBookingslotsReq) {
-    let queryString = `date=${req.date}&ianaTz=${req.ianaTz}&duration=${req.duration}&interval=${req.interval}`;
-    if (req.calendarIds && req.calendarIds.length > 0) {
-      queryString += `&calendarIds=${req.calendarIds.join(",")}`;
-    }
-    return this.get<GetUserBookingslotsResponse>(
-      `/user/${userId}/booking?${queryString}`
-    );
+
+export class NettuUserUserClient extends NettuBaseClient {
+  public me() {
+    return this.get<UserResponse>(`/me`);
   }
 }
