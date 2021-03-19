@@ -43,7 +43,7 @@ type ClientConfig = {
 };
 
 export const config: ClientConfig = {
-  baseUrl: "http://localhost:5000",
+  baseUrl: "http://localhost:5000/api/v1",
 };
 
 export const NettuUserClient = (
@@ -51,13 +51,13 @@ export const NettuUserClient = (
 ): INettuUserClient => {
   const creds = createCreds(partialCreds);
 
-  return {
+  return Object.freeze({
     calendar: new NettuCalendarUserClient(creds),
     events: new NettuEventUserClient(creds),
     service: new NettuServiceUserClient(creds),
     schedule: new NettuScheduleUserClient(creds),
     user: new NettuUserUserClient(creds)
-  };
+  });
 };
 
 export const NettuClient = (
@@ -65,7 +65,7 @@ export const NettuClient = (
 ): INettuClient => {
   const creds = createCreds(partialCreds);
 
-  return {
+  return Object.freeze({
     account: new NettuAccountClient(creds),
     events: new NettuEventClient(creds),
     calendar: new NettuCalendarClient(creds),
@@ -73,7 +73,7 @@ export const NettuClient = (
     service: new NettuServiceClient(creds),
     schedule: new NettuScheduleClient(creds),
     health: new NettuHealthClient(creds),
-  };
+  });
 };
 
 const createCreds = (creds?: PartialCredentials): ICredentials => {

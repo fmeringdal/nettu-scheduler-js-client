@@ -25,6 +25,7 @@ type UpdateCalendarEventReq = {
   busy?: boolean;
   recurrence?: RRuleOptions;
   isService?: boolean;
+  exdates?: number[];
   reminder?: {
     minutesBefore: number;
   };

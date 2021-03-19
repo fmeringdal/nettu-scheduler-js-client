@@ -1,17 +1,23 @@
-import { Service } from "./domain/service";
+import { Service, TimePlan } from "./domain/service";
 import { NettuBaseClient } from "./baseClient";
 import { Metadata } from "./domain/metadata";
 
 type AddUserToServiceRequest = {
   userId: string;
-  calendarIds?: string[];
-  scheduleIds?: string[];
+  availibility?: TimePlan,
+  busy?: string[];
+  buffer?: number;
+  closestBookingTime?: number;
+  furthestBookingTime?: number;
 };
 
 type UpdateUserToServiceRequest = {
   userId: string;
-  calendarIds?: string[];
-  scheduleIds?: string[];
+  availibility?: TimePlan,
+  busy?: string[];
+  buffer?: number;
+  closestBookingTime?: number;
+  furthestBookingTime?: number;
 };
 
 type GetServiceBookingslotsReq = {
@@ -45,10 +51,12 @@ type ServiceResponse = {
 
 export class NettuServiceClient extends NettuBaseClient {
   public create(data?: CreateServiceRequest) {
+    data = data ? data : {};
     return this.post<ServiceResponse>("/service", data);
   }
 
   public update(serviceId: string, data?: UpdateServiceRequest) {
+    data = data ? data : {};
     return this.put<ServiceResponse>(`/service/${serviceId}`, data);
   }
 
@@ -60,11 +68,11 @@ export class NettuServiceClient extends NettuBaseClient {
     return this.delete<ServiceResponse>(`/service/${serviceId}`);
   }
 
-  public addUserToService(serviceId: string, data: AddUserToServiceRequest) {
+  public addUser(serviceId: string, data: AddUserToServiceRequest) {
     return this.post<ServiceResponse>(`/service/${serviceId}/users`, data);
   }
 
-  public removeUserFromService(serviceId: string, userId: string) {
+  public removeUser(serviceId: string, userId: string) {
     return this.delete<ServiceResponse>(`/service/${serviceId}/users/${userId}`);
   }
 
@@ -72,10 +80,7 @@ export class NettuServiceClient extends NettuBaseClient {
     serviceId: string,
     data: UpdateUserToServiceRequest
   ) {
-    return this.put<ServiceResponse>(`/service/${serviceId}/users/${data.userId}`, {
-      calendarIds: data.calendarIds,
-      scheduleIds: data.scheduleIds,
-    });
+    return this.put<ServiceResponse>(`/service/${serviceId}/users/${data.userId}`, data);
   }
 
   public getBookingslots(serviceId: string, req: GetServiceBookingslotsReq) {

@@ -5,14 +5,19 @@ type AccountResponse = {
   account: Account;
 };
 
-type CreatedAccountRequest = {
+type CreateAccountResponse = {
+  account: Account;
+  secretApiKey: string;
+};
+
+type CreateAccountRequest = {
   code: string;
 };
 
 export class NettuAccountClient extends NettuBaseClient {
   // data will be something in the future
-  public create(data: CreatedAccountRequest) {
-    return this.post<AccountResponse>("/account", data);
+  public create(data: CreateAccountRequest) {
+    return this.post<CreateAccountResponse>("/account", data);
   }
 
   public setPublicSigningKey(publicSigningKey?: string) {

@@ -5,8 +5,8 @@ import { CalendarEvent, CalendarEventInstance } from "./domain";
 import { Timespan } from "./eventClient";
 
 type CreateCalendarRequest = {
+  timezone: string;
   weekStart?: number;
-  timezone?: string;
   metadata?: Metadata,
 };
 
@@ -52,7 +52,13 @@ export class NettuCalendarClient extends NettuBaseClient {
     calendarId: string,
     data: UpdateCalendarRequest
   ) {
-    return this.put<CalendarResponse>(`/user/calendar/${calendarId}`, data);
+    return this.put<CalendarResponse>(`/user/calendar/${calendarId}`, {
+      settings: {
+        timezone: data.timezone,
+        weekStart: data.weekStart
+      },
+      metadata: data.metadata
+    });
   }
 
   public getEvents(calendarId: string, startTS: number, endTS: number) {

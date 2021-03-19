@@ -15,3 +15,4 @@ export {
   Weekday,
 } from "./schedule";
 export { Service, UserServiceResource } from "./service";
+export { Permissions } from "./permissions";

@@ -10,7 +10,7 @@ type GetUserFeebusyReq = {
 };
 
 type GetUserFeebusyResponse = {
-  free: CalendarEventInstance[];
+  busy: CalendarEventInstance[];
 };
 
 type UpdateUserRequest = {
@@ -27,6 +27,7 @@ type UserResponse = {
 
 export class NettuUserClient extends NettuBaseClient {
   public create(data?: CreateUserRequest) {
+    data = data ? data : {};
     return this.post<UserResponse>(`/user`, data);
   }
 
