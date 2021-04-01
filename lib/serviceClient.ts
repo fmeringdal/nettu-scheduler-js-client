@@ -24,7 +24,8 @@ type GetServiceBookingslotsReq = {
   ianaTz: string;
   duration: number;
   interval: number;
-  date: string;
+  startDate: string;
+  endDate: string;
 };
 
 type ServiceBookingSlot = {
@@ -84,18 +85,19 @@ export class NettuServiceClient extends NettuBaseClient {
   }
 
   public getBookingslots(serviceId: string, req: GetServiceBookingslotsReq) {
-    const queryString = `date=${req.date}&ianaTz=${req.ianaTz}&duration=${req.duration}&interval=${req.interval}`;
     return this.get<GetServiceBookingslotsResponse>(
-      `/service/${serviceId}/booking?${queryString}`
+      `/service/${serviceId}/booking?${getBookingslotsQueryString(req)}`
     );
   }
 }
 
+const getBookingslotsQueryString = (req: GetServiceBookingslotsReq): string =>
+  `startDate=${req.startDate}&endDate=${req.endDate}&ianaTz=${req.ianaTz}&duration=${req.duration}&interval=${req.interval}`
+
 export class NettuServiceUserClient extends NettuBaseClient {
   public getBookingslots(serviceId: string, req: GetServiceBookingslotsReq) {
-    const queryString = `date=${req.date}&ianaTz=${req.ianaTz}&duration=${req.duration}&interval=${req.interval}`;
     return this.get<GetServiceBookingslotsResponse>(
-      `/service/${serviceId}/booking?${queryString}`
+      `/service/${serviceId}/booking?${getBookingslotsQueryString(req)}`
     );
   }
 }

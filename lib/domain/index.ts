@@ -16,3 +16,4 @@ export {
 } from "./schedule";
 export { Service, UserServiceResource } from "./service";
 export { Permissions } from "./permissions";
+export { User } from "./user";
