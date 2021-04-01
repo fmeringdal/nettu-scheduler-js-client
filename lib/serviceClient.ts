@@ -35,7 +35,10 @@ type ServiceBookingSlot = {
 };
 
 type GetServiceBookingslotsResponse = {
-  bookingSlots: ServiceBookingSlot[];
+  dates: {
+    date: string;
+    slots: ServiceBookingSlot[];
+  }[];
 };
 
 type CreateServiceRequest = {
