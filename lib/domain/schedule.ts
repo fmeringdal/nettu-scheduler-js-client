@@ -1,7 +1,10 @@
+import { Metadata } from "./metadata";
+
 export interface Schedule {
   id: string;
   timezone: string;
   rules: ScheduleRule[];
+  metadata: Metadata;
 }
 
 export enum ScheduleRuleVariant {

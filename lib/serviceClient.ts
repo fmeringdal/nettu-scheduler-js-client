@@ -1,11 +1,11 @@
-import { Service, TimePlan } from "./domain/service";
+import { BusyCalendar, Service, TimePlan } from "./domain/service";
 import { NettuBaseClient } from "./baseClient";
 import { Metadata } from "./domain/metadata";
 
 type AddUserToServiceRequest = {
   userId: string;
-  availibility?: TimePlan,
-  busy?: string[];
+  availibility?: TimePlan;
+  busy?: BusyCalendar[];
   buffer?: number;
   closestBookingTime?: number;
   furthestBookingTime?: number;
@@ -13,8 +13,8 @@ type AddUserToServiceRequest = {
 
 type UpdateUserToServiceRequest = {
   userId: string;
-  availibility?: TimePlan,
-  busy?: string[];
+  availibility?: TimePlan;
+  busy?: BusyCalendar[];
   buffer?: number;
   closestBookingTime?: number;
   furthestBookingTime?: number;
@@ -43,15 +43,15 @@ type GetServiceBookingslotsResponse = {
 
 type CreateServiceRequest = {
   metadata?: Metadata;
-}
+};
 
 type UpdateServiceRequest = {
   metadata?: Metadata;
-}
+};
 
 type ServiceResponse = {
   service: Service;
-}
+};
 
 export class NettuServiceClient extends NettuBaseClient {
   public create(data?: CreateServiceRequest) {
@@ -77,14 +77,19 @@ export class NettuServiceClient extends NettuBaseClient {
   }
 
   public removeUser(serviceId: string, userId: string) {
-    return this.delete<ServiceResponse>(`/service/${serviceId}/users/${userId}`);
+    return this.delete<ServiceResponse>(
+      `/service/${serviceId}/users/${userId}`
+    );
   }
 
   public updateUserInService(
     serviceId: string,
     data: UpdateUserToServiceRequest
   ) {
-    return this.put<ServiceResponse>(`/service/${serviceId}/users/${data.userId}`, data);
+    return this.put<ServiceResponse>(
+      `/service/${serviceId}/users/${data.userId}`,
+      data
+    );
   }
 
   public getBookingslots(serviceId: string, req: GetServiceBookingslotsReq) {
@@ -95,7 +100,7 @@ export class NettuServiceClient extends NettuBaseClient {
 }
 
 const getBookingslotsQueryString = (req: GetServiceBookingslotsReq): string =>
-  `startDate=${req.startDate}&endDate=${req.endDate}&ianaTz=${req.ianaTz}&duration=${req.duration}&interval=${req.interval}`
+  `startDate=${req.startDate}&endDate=${req.endDate}&ianaTz=${req.ianaTz}&duration=${req.duration}&interval=${req.interval}`;
 
 export class NettuServiceUserClient extends NettuBaseClient {
   public getBookingslots(serviceId: string, req: GetServiceBookingslotsReq) {

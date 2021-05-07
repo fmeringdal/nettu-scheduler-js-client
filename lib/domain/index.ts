@@ -1,5 +1,10 @@
 export { Account } from "./account";
-export { Calendar } from "./calendar";
+export {
+  Calendar,
+  SyncedCalendar,
+  SyncedCalendarProvider,
+  GoogleCalendarAccessRole,
+} from "./calendar";
 export {
   CalendarEvent,
   CalendarEventInstance,
@@ -14,6 +19,11 @@ export {
   ScheduleRuleVariant,
   Weekday,
 } from "./schedule";
-export { Service, UserServiceResource } from "./service";
+export {
+  Service,
+  UserServiceResource,
+  BusyCalendar,
+  BusyCalendarProvider,
+} from "./service";
 export { Permissions } from "./permissions";
 export { User } from "./user";

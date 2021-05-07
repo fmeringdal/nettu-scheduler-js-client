@@ -14,6 +14,12 @@ type CreateAccountRequest = {
   code: string;
 };
 
+type GoogleIntegration = {
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+};
+
 export class NettuAccountClient extends NettuBaseClient {
   // data will be something in the future
   public create(data: CreateAccountRequest) {
@@ -32,8 +38,12 @@ export class NettuAccountClient extends NettuBaseClient {
 
   public setWebhook(url: string) {
     return this.put<AccountResponse>(`/account/webhook`, {
-      webhookUrl: url
+      webhookUrl: url,
     });
+  }
+
+  public connectGoogle(data: GoogleIntegration) {
+    return this.put<AccountResponse>(`/account/integration/google`, data);
   }
 
   public removeWebhook() {
